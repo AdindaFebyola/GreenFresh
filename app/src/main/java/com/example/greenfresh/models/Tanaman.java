@@ -1,8 +1,9 @@
 package com.example.greenfresh.models;
 
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
-public class Tanaman {
+public class Tanaman implements Serializable {
 
     @SerializedName("id")
     private int id;
