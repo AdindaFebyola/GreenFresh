@@ -1,0 +1,34 @@
+package com.example.greenfresh.models;
+
+import com.google.gson.annotations.SerializedName;
+
+public class Tanaman {
+
+    @SerializedName("id")
+    private int id;
+
+    @SerializedName("plant_name")
+    private String plantName;
+
+    @SerializedName("description")
+    private String description;
+
+    @SerializedName("price")
+    private String price;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getPlantName() {
+        return plantName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+}
