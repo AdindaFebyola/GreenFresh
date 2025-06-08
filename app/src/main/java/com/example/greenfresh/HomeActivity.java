@@ -24,6 +24,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import androidx.appcompat.app.AlertDialog;
+import android.content.DialogInterface;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -45,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // --- PERUBAHAN 1: Inisialisasi adapter sekali saja di awal dengan list kosong ---
         plantList = new ArrayList<>();
-        plantAdapter = new PlantAdapter(this, plantList);
+        plantAdapter = new PlantAdapter(this, plantList, this);
         recyclerView.setAdapter(plantAdapter);
         // --- AKHIR PERUBAHAN 1 ---
 
@@ -90,5 +92,32 @@ public class HomeActivity extends AppCompatActivity {
                 Log.e("HomeActivity", "onFailure: " + t.getMessage());
             }
         });
+    }
+    public void deletePlant(String plantName) {
+        new AlertDialog.Builder(this)
+                .setTitle("Konfirmasi Hapus")
+                .setMessage("Apakah Anda yakin ingin menghapus tanaman '" + plantName + "'?")
+                .setPositiveButton("Hapus", (dialog, which) -> {
+                    // Jika pengguna menekan "Hapus", kita panggil API
+                    ApiClient.getApiService().deletePlant(plantName).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(HomeActivity.this, "Tanaman berhasil dihapus", Toast.LENGTH_SHORT).show();
+                                fetchPlants(); // Refresh daftar tanaman
+                            } else {
+                                Toast.makeText(HomeActivity.this, "Gagal menghapus. Kode: " + response.code(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                            Toast.makeText(HomeActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                })
+                .setNegativeButton("Batal", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

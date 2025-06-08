@@ -4,8 +4,10 @@ import com.example.greenfresh.models.Tanaman;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ApiService {
 
@@ -14,4 +16,7 @@ public interface ApiService {
 
     @POST("plant/new")
     Call<Tanaman> addPlant(@Body Tanaman tanaman);
+
+    @DELETE("plant/{name}")
+    Call<Void> deletePlant(@Path("name") String plantName);
 }
