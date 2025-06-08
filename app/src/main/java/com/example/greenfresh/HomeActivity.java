@@ -6,8 +6,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.greenfresh.adapters.PlantAdapter;
@@ -24,10 +27,10 @@ import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
-    // 1. Deklarasi variabel untuk RecyclerView, Adapter, dan daftar tanaman
     private RecyclerView recyclerView;
     private PlantAdapter plantAdapter;
     private List<Tanaman> plantList;
+    private Button btnAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,40 +40,52 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_home);
         setSupportActionBar(toolbar);
 
-        // 2. Inisialisasi RecyclerView
         recyclerView = findViewById(R.id.recycler_view_plants);
-        // Mengatur bagaimana item akan ditampilkan (misalnya, sebagai daftar linear vertikal)
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // 3. Panggil method untuk mengambil data dari API
+        // --- PERUBAHAN 1: Inisialisasi adapter sekali saja di awal dengan list kosong ---
+        plantList = new ArrayList<>();
+        plantAdapter = new PlantAdapter(this, plantList);
+        recyclerView.setAdapter(plantAdapter);
+        // --- AKHIR PERUBAHAN 1 ---
+
+        btnAdd = findViewById(R.id.button_add);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, AddPlantActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Tetap panggil fetchPlants() setiap kali activity ini kembali aktif
         fetchPlants();
     }
 
     private void fetchPlants() {
-        // 4. Menggunakan ApiClient yang sudah kita buat untuk mendapatkan service API
         Call<ApiResponse> call = ApiClient.getApiService().getAllPlants();
 
-        // 5. Menjalankan panggilan API secara asynchronous (di background thread)
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse> call, @NonNull Response<ApiResponse> response) {
-                // 6. Cek apakah panggilan berhasil dan mendapatkan respons
                 if (response.isSuccessful() && response.body() != null) {
-                    // Ambil daftar tanaman dari body respons
-                    plantList = response.body().getData();
-                    // Inisialisasi adapter dengan data yang didapat
-                    plantAdapter = new PlantAdapter(HomeActivity.this, plantList);
-                    // Set adapter ke RecyclerView
-                    recyclerView.setAdapter(plantAdapter);
+
+                    // --- PERUBAHAN 2: Panggil updateData, jangan buat adapter baru ---
+                    List<Tanaman> fetchedPlants = response.body().getData();
+                    plantAdapter.updateData(fetchedPlants);
+                    // --- AKHIR PERUBAHAN 2 ---
+
                 } else {
-                    // Jika gagal, tampilkan pesan error
                     Toast.makeText(HomeActivity.this, "Gagal mengambil data. Kode: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ApiResponse> call, @NonNull Throwable t) {
-                // 7. Jika terjadi error koneksi atau lainnya
                 Toast.makeText(HomeActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("HomeActivity", "onFailure: " + t.getMessage());
             }

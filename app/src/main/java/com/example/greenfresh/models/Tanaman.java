@@ -31,4 +31,10 @@ public class Tanaman {
     public String getPrice() {
         return price;
     }
+
+    public Tanaman(String plantName, String description, String price) {
+        this.plantName = plantName;
+        this.description = description;
+        this.price = price;
+    }
 }

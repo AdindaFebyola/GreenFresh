@@ -52,6 +52,12 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
         return plantList.size();
     }
 
+    public void updateData(List<Tanaman> newPlantList) {
+        this.plantList.clear(); // Kosongkan list yang lama
+        this.plantList.addAll(newPlantList); // Isi dengan data yang baru
+        notifyDataSetChanged(); // Perintahkan RecyclerView untuk me-refresh dirinya
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPlantImage;
         TextView tvPlantName, tvPlantPrice;
