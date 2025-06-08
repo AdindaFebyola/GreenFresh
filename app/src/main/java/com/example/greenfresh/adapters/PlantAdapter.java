@@ -51,12 +51,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
         holder.tvPlantName.setText(plant.getPlantName());
         holder.tvPlantPrice.setText("Rp " + plant.getPrice());
 
-        // Menggunakan Glide untuk memuat gambar (sementara pakai logo)
-        Glide.with(context)
-                .load(R.drawable.logo) // Nanti bisa diganti dengan plant.getImageUrl() jika ada
-                .placeholder(R.drawable.logo)
-                .error(R.drawable.logo)
-                .into(holder.ivPlantImage);
+        holder.ivPlantImage.setImageResource(R.drawable.tanaman);
 
         // Memberi aksi klik untuk tombol Hapus
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {

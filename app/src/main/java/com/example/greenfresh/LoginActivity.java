@@ -1,8 +1,12 @@
+// File: LoginActivity.java
 package com.example.greenfresh;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,19 +16,32 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private FirebaseAuth mAuth;
+
+    // --- Variabel Baru untuk Google Sign-In ---
+    private GoogleSignInClient mGoogleSignInClient;
+    private ActivityResultLauncher<Intent> mGoogleSignInLauncher;
+    private static final String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +52,79 @@ public class LoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.email_edit_text_login);
         etPassword = findViewById(R.id.password_edit_text_login);
         btnLogin = findViewById(R.id.button_login_submit);
+        SignInButton btnGoogleSignIn = findViewById(R.id.button_google_sign_in);
 
+        // --- Konfigurasi Google Sign-In ---
+        createGoogleRequest();
+
+        // --- Launcher untuk menangani hasil dari Google Sign-In ---
+        mGoogleSignInLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                        try {
+                            GoogleSignInAccount account = task.getResult(ApiException.class);
+                            firebaseAuthWithGoogle(account.getIdToken());
+                        } catch (ApiException e) {
+                            Log.w(TAG, "Google sign in failed", e);
+                            Toast.makeText(LoginActivity.this, "Google Sign-In Gagal", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
+
+        // Listener untuk login email/password yang sudah ada
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loginUser();
             }
         });
+
+        // Listener untuk tombol login Google yang baru
+        btnGoogleSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signInWithGoogle();
+            }
+        });
     }
 
+    private void createGoogleRequest() {
+        // Konfigurasi Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
+
+    private void signInWithGoogle() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        mGoogleSignInLauncher.launch(signInIntent);
+    }
+
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success
+                            Toast.makeText(getApplicationContext(), "Login Google Berhasil!", Toast.LENGTH_SHORT).show();
+                            navigateToHome();
+                        } else {
+                            // If sign in fails
+                            Toast.makeText(LoginActivity.this, "Autentikasi Firebase Gagal.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    // Ini adalah method login Anda yang sudah ada, tidak diubah
     private void loginUser() {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
@@ -64,32 +145,29 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Login Berhasil!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finishAffinity();
+                            navigateToHome();
                         } else {
-                            // ---> INI BAGIAN YANG KITA UBAH <---
-                            // Jika login gagal, kita cek jenis errornya
                             try {
-                                // Lemparkan exception untuk ditangkap dan diidentifikasi
                                 throw task.getException();
                             } catch (FirebaseAuthInvalidUserException e) {
-                                // Error jika email tidak terdaftar
                                 Toast.makeText(LoginActivity.this, "Email tidak terdaftar.", Toast.LENGTH_LONG).show();
                             } catch (FirebaseAuthInvalidCredentialsException e) {
-                                // Error jika password salah
                                 Toast.makeText(LoginActivity.this, "Password salah.", Toast.LENGTH_LONG).show();
                             } catch (FirebaseNetworkException e) {
-                                // Error jika tidak ada koneksi internet
                                 Toast.makeText(LoginActivity.this, "Tidak ada koneksi internet.", Toast.LENGTH_LONG).show();
                             } catch (Exception e) {
-                                // Error umum lainnya
                                 Toast.makeText(LoginActivity.this, "Login Gagal: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                                // Log untuk developer melihat error asli
-                                Log.e("LoginActivity", e.getMessage());
+                                Log.e(TAG, e.getMessage());
                             }
                         }
                     }
                 });
+    }
+
+    // Method helper untuk pindah ke HomeActivity
+    private void navigateToHome() {
+        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finishAffinity();
     }
 }

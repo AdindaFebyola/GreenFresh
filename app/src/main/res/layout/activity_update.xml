@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="#8BC34A"
-            app:title="Tambah Tanaman Baru"
+            app:title="Update Data Tanaman"
             app:titleTextColor="@android:color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -38,7 +38,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="24dp"
-                android:src="@drawable/tanaman"
+                android:src="@drawable/logo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -111,12 +111,12 @@
                 app:layout_constraintTop_toBottomOf="@id/label_deskripsi" />
 
             <Button
-                android:id="@+id/button_submit_add"
+                android:id="@+id/button_submit_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:paddingVertical="12dp"
-                android:text="Tambah"
+                android:text="Simpan Perubahan"
                 android:backgroundTint="#8BC34A"
                 app:layout_constraintTop_toBottomOf="@id/edit_text_description"
                 app:layout_constraintBottom_toBottomOf="parent"/>

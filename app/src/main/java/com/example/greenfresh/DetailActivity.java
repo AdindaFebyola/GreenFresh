@@ -2,6 +2,7 @@ package com.example.greenfresh;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,16 +48,20 @@ public class DetailActivity extends AppCompatActivity {
             tvPrice.setText("Rp " + plant.getPrice());
             tvDescription.setText(plant.getDescription());
 
-            // Tampilkan gambar menggunakan Glide (sementara pakai logo)
-            Glide.with(this)
-                    .load(R.drawable.logo) // Ganti dengan plant.getImageUrl() jika ada
-                    .into(ivImage);
+            ivImage.setImageResource(R.drawable.tanaman);
         } else {
             // Jika data null, tampilkan pesan error dan tutup activity
             Toast.makeText(this, "Data tanaman tidak ditemukan.", Toast.LENGTH_SHORT).show();
             finish();
         }
-
-        // Fungsi untuk tombol Update akan kita tambahkan nanti
+        btnUpdatePage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailActivity.this, UpdateActivity.class);
+                // Kirim juga data tanaman ke UpdateActivity
+                intent.putExtra("EXTRA_PLANT", plant);
+                startActivity(intent);
+            }
+        });
     }
 }
