@@ -1,4 +1,3 @@
-// File: LoginActivity.java
 package com.example.greenfresh;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -38,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private FirebaseAuth mAuth;
 
-    // --- Variabel Baru untuk Google Sign-In ---
     private GoogleSignInClient mGoogleSignInClient;
     private ActivityResultLauncher<Intent> mGoogleSignInLauncher;
     private static final String TAG = "LoginActivity";
@@ -52,12 +50,10 @@ public class LoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.email_edit_text_login);
         etPassword = findViewById(R.id.password_edit_text_login);
         btnLogin = findViewById(R.id.button_login_submit);
-        SignInButton btnGoogleSignIn = findViewById(R.id.button_google_sign_in);
+        Button btnGoogleSignIn = findViewById(R.id.button_google_sign_in);
 
-        // --- Konfigurasi Google Sign-In ---
         createGoogleRequest();
 
-        // --- Launcher untuk menangani hasil dari Google Sign-In ---
         mGoogleSignInLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -75,7 +71,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
         );
 
-        // Listener untuk login email/password yang sudah ada
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Listener untuk tombol login Google yang baru
         btnGoogleSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +87,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void createGoogleRequest() {
-        // Konfigurasi Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -102,8 +95,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signInWithGoogle() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        mGoogleSignInLauncher.launch(signInIntent);
+        mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
+            // Setelah sign out selesai, baru mulai intent untuk sign in
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            mGoogleSignInLauncher.launch(signInIntent);
+        });
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
@@ -124,7 +120,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    // Ini adalah method login Anda yang sudah ada, tidak diubah
     private void loginUser() {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
@@ -164,7 +159,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    // Method helper untuk pindah ke HomeActivity
     private void navigateToHome() {
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(intent);

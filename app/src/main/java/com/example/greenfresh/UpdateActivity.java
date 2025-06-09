@@ -28,35 +28,32 @@ public class UpdateActivity extends AppCompatActivity {
 
     private EditText etPlantName, etPrice, etDescription;
     private Button btnSubmitUpdate;
-    private Tanaman currentPlant; // Untuk menyimpan data tanaman yang akan diupdate
-
+    private Tanaman currentPlant;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
-
-        Toolbar toolbar = findViewById(R.id.toolbar_add); // ID toolbar sama dengan layout add
+        Toolbar toolbar = findViewById(R.id.toolbar_update);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        // Hubungkan variabel dengan komponen UI
         etPlantName = findViewById(R.id.edit_text_plant_name);
         etPrice = findViewById(R.id.edit_text_price);
         etDescription = findViewById(R.id.edit_text_description);
         btnSubmitUpdate = findViewById(R.id.button_submit_update);
 
-        // Ambil data tanaman dari Intent
         currentPlant = (Tanaman) getIntent().getSerializableExtra("EXTRA_PLANT");
 
-        // Isi form dengan data yang ada
         if (currentPlant != null) {
             etPlantName.setText(currentPlant.getPlantName());
             etPrice.setText(currentPlant.getPrice());
             etDescription.setText(currentPlant.getDescription());
         }
 
-        // Beri aksi pada tombol simpan perubahan
         btnSubmitUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,28 +63,22 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     private void updatePlantData() {
-        // Ambil data baru dari form
         String newName = etPlantName.getText().toString().trim();
         String newPrice = etPrice.getText().toString().trim();
         String newDescription = etDescription.getText().toString().trim();
 
-        // Validasi
         if (TextUtils.isEmpty(newName) || TextUtils.isEmpty(newPrice) || TextUtils.isEmpty(newDescription)) {
             Toast.makeText(this, "Semua field harus diisi!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Buat objek Tanaman dengan data baru
         Tanaman updatedPlant = new Tanaman(newName, newDescription, newPrice);
 
-        // Panggil API untuk update
-        // Kita butuh nama original untuk path URL, dan data baru untuk body
         ApiClient.getApiService().updatePlant(currentPlant.getPlantName(), updatedPlant).enqueue(new Callback<Tanaman>() {
             @Override
             public void onResponse(@NonNull Call<Tanaman> call, @NonNull Response<Tanaman> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(UpdateActivity.this, "Data berhasil diupdate!", Toast.LENGTH_SHORT).show();
-                    // Tutup semua activity di atas HomeActivity dan kembali ke sana
                     Intent intent = new Intent(UpdateActivity.this, HomeActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);

@@ -28,29 +28,26 @@ public class DetailActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar_detail);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        // Inisialisasi Views
         tvName = findViewById(R.id.text_detail_name);
         tvPrice = findViewById(R.id.text_detail_price);
         tvDescription = findViewById(R.id.text_detail_description);
         ivImage = findViewById(R.id.image_detail);
         btnUpdatePage = findViewById(R.id.button_update_page);
 
-        // Ambil data Tanaman yang dikirim dari adapter
         plant = (Tanaman) getIntent().getSerializableExtra("EXTRA_PLANT");
-
-        // Cek apakah data tidak null
         if (plant != null) {
-            // Tampilkan data ke komponen UI
             tvName.setText(plant.getPlantName());
             tvPrice.setText("Rp " + plant.getPrice());
             tvDescription.setText(plant.getDescription());
 
             ivImage.setImageResource(R.drawable.tanaman);
         } else {
-            // Jika data null, tampilkan pesan error dan tutup activity
             Toast.makeText(this, "Data tanaman tidak ditemukan.", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -58,7 +55,6 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailActivity.this, UpdateActivity.class);
-                // Kirim juga data tanaman ke UpdateActivity
                 intent.putExtra("EXTRA_PLANT", plant);
                 startActivity(intent);
             }

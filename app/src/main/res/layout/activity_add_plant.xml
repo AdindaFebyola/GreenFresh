@@ -16,9 +16,18 @@
             android:id="@+id/toolbar_add"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#8BC34A"
-            app:title="Tambah Tanaman Baru"
-            app:titleTextColor="@android:color/white" />
+            android:background="#408f17"
+            app:titleTextColor="@android:color/white"> <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tambah Tanaman Baru"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
+        </androidx.appcompat.widget.Toolbar>
+
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -51,6 +60,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:text="Nama Tanaman :"
+                android:fontFamily="@font/poppins_regular"
                 android:textColor="@android:color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_view_add" />
@@ -61,6 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:hint="Masukkan nama tanaman"
+                android:fontFamily="@font/poppins_regular"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/label_nama_tanaman" />
@@ -72,6 +83,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:text="Harga :"
+                android:fontFamily="@font/poppins_regular"
                 android:textColor="@android:color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edit_text_plant_name" />
@@ -82,6 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:hint="Masukkan harga"
+                android:fontFamily="@font/poppins_regular"
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -95,6 +108,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:text="Deskripsi :"
+                android:fontFamily="@font/poppins_regular"
                 android:textColor="@android:color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edit_text_price" />
@@ -102,10 +116,11 @@
             <EditText
                 android:id="@+id/edit_text_description"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:gravity="top"
                 android:hint="Masukkan deskripsi tanaman"
+                android:fontFamily="@font/poppins_regular"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/label_deskripsi" />
@@ -117,7 +132,8 @@
                 android:layout_margin="16dp"
                 android:paddingVertical="12dp"
                 android:text="Tambah"
-                android:backgroundTint="#8BC34A"
+                android:fontFamily="@font/poppins_regular"
+                android:backgroundTint="#408f17"
                 app:layout_constraintTop_toBottomOf="@id/edit_text_description"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 

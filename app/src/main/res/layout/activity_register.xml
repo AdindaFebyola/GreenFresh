@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F4F7"
+    android:background="#E8F5E9"
     tools:context=".RegisterActivity">
 
     <ImageView
         android:id="@+id/image_logo_register"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,12 +24,23 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Register"
-        android:textColor="@android:color/black"
-        android:textSize="28sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="#064420"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image_logo_register" />
+
+    <TextView
+        android:id="@+id/label_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="5dp"
+        android:text="Email"
+        android:textColor="#064420"
+        app:layout_constraintTop_toBottomOf="@id/text_title_register"
+        app:layout_constraintStart_toStartOf="@+id/email_layout_register" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_layout_register"
@@ -37,19 +48,35 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:hint="Email"
+        android:layout_marginTop="8dp"
+        app:boxCornerRadiusBottomEnd="16dp"
+        app:boxCornerRadiusBottomStart="16dp"
+        app:boxCornerRadiusTopEnd="16dp"
+        app:boxCornerRadiusTopStart="16dp"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_title_register">
-
+        app:layout_constraintTop_toBottomOf="@id/label_email">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email_edit_text_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Masukkan email Anda"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Label dan Input untuk Password -->
+    <TextView
+        android:id="@+id/label_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+        android:text="Password"
+        android:textColor="#064420"
+        app:layout_constraintTop_toBottomOf="@id/email_layout_register"
+        app:layout_constraintStart_toStartOf="@+id/password_layout_register" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_layout_register"
@@ -57,20 +84,35 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:hint="Password"
+        android:layout_marginTop="8dp"
+        app:boxCornerRadiusBottomEnd="16dp"
+        app:boxCornerRadiusBottomStart="16dp"
+        app:boxCornerRadiusTopEnd="16dp"
+        app:boxCornerRadiusTopStart="16dp"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email_layout_register"
+        app:layout_constraintTop_toBottomOf="@id/label_password"
         app:passwordToggleEnabled="true">
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_edit_text_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Minimal 6 karakter"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/label_confirm_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+        android:text="Konfirmasi Password"
+        android:textColor="#064420"
+        app:layout_constraintTop_toBottomOf="@id/password_layout_register"
+        app:layout_constraintStart_toStartOf="@+id/confirm_password_layout_register" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/confirm_password_layout_register"
@@ -78,18 +120,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:hint="Konfirmasi Password"
+        android:layout_marginTop="8dp"
+        app:boxCornerRadiusBottomEnd="16dp"
+        app:boxCornerRadiusBottomStart="16dp"
+        app:boxCornerRadiusTopEnd="16dp"
+        app:boxCornerRadiusTopStart="16dp"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password_layout_register"
+        app:layout_constraintTop_toBottomOf="@id/label_confirm_password"
         app:passwordToggleEnabled="true">
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/confirm_password_edit_text_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Ulangi password Anda"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,15 +144,47 @@
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:backgroundTint="#8BC34A"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#408f17"
+        app:cornerRadius="25dp"
         android:text="Register"
         android:textAllCaps="false"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
-        app:cornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/confirm_password_layout_register" />
+
+    <TextView
+        android:id="@+id/text_atau_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="- OR -"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_register_submit" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_google_register"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_google_secondary"
+        android:drawablePadding="12dp"
+        android:gravity="center"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:text="Register with Google"
+        android:textAllCaps="false"
+        android:textColor="#064420"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_atau_register" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

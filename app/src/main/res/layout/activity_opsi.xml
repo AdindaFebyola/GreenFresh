@@ -4,32 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F4F7"
+    android:background="#E8F5E9"
     tools:context=".OpsiActivity">
-
-    <ImageView
-        android:id="@+id/image_logo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/logo"
-        app:layout_constraintBottom_toTopOf="@+id/text_welcome"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@string/app_name" />
 
     <TextView
         android:id="@+id/text_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="192dp"
+        android:fontFamily="@font/poppins_bold"
         android:text="Selamat Datang"
-        android:textColor="@android:color/black"
+        android:textColor="#064420"
         android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_logo"
+        android:layout_width="180dp"
+        android:layout_height="176dp"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_welcome" />
 
     <Button
         android:id="@+id/button_login"
@@ -38,10 +38,11 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#8BC34A"
+        android:backgroundTint="#408f17"
         android:text="Login"
         android:textAllCaps="false"
         android:textSize="18sp"
+        android:fontFamily="@font/poppins_regular"
         app:cornerRadius="16dp"
         app:layout_constraintBottom_toTopOf="@+id/layout_register"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,8 +52,8 @@
         android:id="@+id/layout_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginBottom="48dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -62,16 +63,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Belum punya akun? "
-            android:textSize="16sp"/>
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/text_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Register disini"
-            android:textColor="#8BC34A"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="#408f17"
             android:textStyle="bold"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
     </LinearLayout>
 
